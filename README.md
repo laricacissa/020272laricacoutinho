@@ -10,15 +10,33 @@ Projeto para o gerenciamento de artistas e seus álbuns desenvolvido em Spring B
 - **Maven** (gerenciamento de dependências)
 - **Lombok** (redução de boilerplate)
 - **Spring Dotenv** (gerenciamento de variáveis de ambiente)
+- **H2 Database** (Banco de Dados em Memória)
+- **OpenAPI/Swagger** (Documentar endpoints)
+- **React com Vite e TailwindCss e Primereact** (FrontEnd em React)
 
 ## 📋 Pré-requisitos
 
 - Java 17 ou superior
 - Maven 3.6+
 - MinIO Server (local)
+- NodeJs versão 
 - Docker (Não consegui testar usando o docker-compose. Justificativa: Tentei instalar no meu computador, mas o CPU que uso em casa não suportou a instalação do Docker. Até tentei comprar um novo computador para realizar o projeto, mas em todas as cotações que eu fiz o CPU só chegaria depois do prazo. Não deu certo. Mas deixei as configurações no projeto. Caso o projeto não execute, basta deletar o arquivo docker-compose.yml)
 
 ## ⚙️ Configuração
+
+### 1. H2 Database
+
+URL via Browser: http://localhost:8080/h2-console
+JDBC URL: jdbc:h2:mem:testdb
+User Name: sa
+Password: (vazio)
+
+Obs.: Acessar após SpringBoot estar inicializado por completo.
+
+### 2. Swagger
+
+URL via Browser: http://localhost:8080/swagger-ui/index.html
+Obs.: Acessar após SpringBoot estar inicializado por completo.
 
 ### 1. Variáveis de Ambiente
 
@@ -64,9 +82,11 @@ docker-compose up -d
 
 ### 1. Clone o repositório
 
+# BackEnd(Spring Boot)
+
 ```bash
-git clone https://github.com/devsdofuturobr/files.git
-cd files
+git clone https://github.com/laricacissa/020272laricacoutinho.git
+cd laricacoutinho-api
 ```
 
 ### 2. Configure as variáveis de ambiente
@@ -86,6 +106,29 @@ mvn spring-boot:run
 ```
 
 A aplicação estará disponível em `http://localhost:8080`
+
+
+# FrontEnd(React)
+
+```bash
+git clone https://github.com/laricacissa/020272laricacoutinho.git
+cd meu-app-fe
+```
+
+### 2. Compile o projeto
+
+```bash
+npm install
+```
+
+### 2. Execute o frontend
+
+```bash
+npm run dev
+```
+
+As funcionalidades estarão disponível em `http://localhost:5173`
+
 
 ## 📚 API Endpoints
 
@@ -164,6 +207,13 @@ curl -X DELETE http://localhost:8080/api/v1/files/delete/20231010_143022_abc123.
 ```
 
 ## 🏗️ Arquitetura do Projeto
+
+No repositório temos duas pastas que compõem dois projetos separados:
+
+Projeto Backend: laricacoutinho-api
+Projeto Frontend: meu-app-fe
+
+
 
 ```
 src/
