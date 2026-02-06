@@ -1,4 +1,4 @@
-INSERT INTO usuario VALUES (default, 'seplag', '123456');
+INSERT INTO login VALUES (default, 'seplag', '123456', 'test123');
 
 INSERT INTO artista VALUES (default, 'Serj Tankian', '2026-02-03', 'S');
 INSERT INTO artista VALUES (default, 'Mike Shinoda', '2026-02-03', 'S');

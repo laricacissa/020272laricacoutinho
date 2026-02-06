@@ -22,7 +22,7 @@ public class ArtistaController {
     @Autowired
     private ArtistaService artistaService;
 
-    @Operation(summary= "Lista todos os artistas ativos")
+    @Operation(summary= "Lista todos os artistas")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Success", content = {
                     @Content(mediaType = "application/json", schema =

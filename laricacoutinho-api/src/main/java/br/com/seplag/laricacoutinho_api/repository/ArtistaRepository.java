@@ -2,9 +2,11 @@ package br.com.seplag.laricacoutinho_api.repository;
 
 import br.com.seplag.laricacoutinho_api.model.Artista;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+@Repository
 public interface ArtistaRepository  extends CrudRepository<Artista, Long> {
     @Override
     Iterable<Artista> findAll();

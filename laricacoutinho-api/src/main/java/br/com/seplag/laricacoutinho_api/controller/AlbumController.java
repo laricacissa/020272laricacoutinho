@@ -2,9 +2,7 @@ package br.com.seplag.laricacoutinho_api.controller;
 
 import br.com.seplag.laricacoutinho_api.dto.AlbumDTO;
 import br.com.seplag.laricacoutinho_api.model.Album;
-import br.com.seplag.laricacoutinho_api.model.Artista;
 import br.com.seplag.laricacoutinho_api.service.AlbumService;
-import br.com.seplag.laricacoutinho_api.service.ArtistaService;
 import br.com.seplag.laricacoutinho_api.util.excecoes.ApiErrorResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -50,7 +48,7 @@ public class AlbumController {
         return ResponseEntity.ok(AlbumDTO.toListDTO(listAlbum));
     }
 
-    @Operation(summary= "Lista todos os albuns por artista ID")
+    @Operation(summary= "Lista todos os albuns")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Success", content = {
                     @Content(mediaType = "application/json", schema =
