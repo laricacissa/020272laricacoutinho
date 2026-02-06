@@ -20,7 +20,6 @@ Projeto para o gerenciamento de artistas e seus álbuns desenvolvido em Spring B
 - Maven 3.6+
 - MinIO Server (local)
 - NodeJs versão 
-- Docker (Não consegui testar usando o docker-compose. Justificativa: Tentei instalar no meu computador, mas o CPU que uso em casa não suportou a instalação do Docker. Até tentei comprar um novo computador para realizar o projeto, mas em todas as cotações que eu fiz o CPU só chegaria depois do prazo. Não deu certo. Mas deixei as configurações no projeto. Caso o projeto não execute, basta deletar o arquivo docker-compose.yml)
 
 ## ⚙️ Configuração
 
@@ -38,45 +37,6 @@ Obs.: Acessar após SpringBoot estar inicializado por completo.
 URL via Browser: http://localhost:8080/swagger-ui/index.html
 Obs.: Acessar após SpringBoot estar inicializado por completo.
 
-### 1. Variáveis de Ambiente
-
-O projeto utiliza um arquivo `.env` na raiz do projeto para configuração. Crie o arquivo `.env` com as seguintes variáveis:
-
-```env
-# Configurações da Aplicação
-APP_NAME=file-upload-service
-MAX_FILE_SIZE=10MB
-MAX_REQUEST_SIZE=10MB
-
-# Configurações do MinIO
-MINIO_ENDPOINT=http://localhost:9000
-MINIO_ACCESS_KEY=minioadmin
-MINIO_SECRET_KEY=minioadmin123
-MINIO_BUCKET_NAME=images
-MINIO_REGION=us-east-1
-```
-
-### 2. MinIO Setup
-
-#### Opção 1: Docker (Recomendado)
-
-```bash
-# Navegar para o diretório docker
-cd docker
-
-# Executar MinIO via Docker Compose
-docker-compose up -d
-```
-
-#### Opção 2: Instalação Local
-
-1. Baixe e instale o MinIO Server
-2. Execute o servidor MinIO:
-   ```bash
-   minio server /data --console-address ":9001"
-   ```
-3. Acesse o console em `http://localhost:9001`
-4. Crie um bucket chamado `images`
 
 ## 🛠️ Instalação e Execução
 
@@ -275,6 +235,16 @@ meu-app-fe/
 ├── tsconfig.node.json				#
 └── vite.config.ts					# Arquivo que configura o compilador Vite
 ```
+
+## Justificativas
+- Docker:
+Não consegui testar usando o docker-compose. Justificativa: Tentei instalar no meu computador, mas o CPU que uso em casa não suportou a instalação do Docker. Até tentei comprar um novo computador para realizar o projeto, mas em todas as cotações que eu fiz o CPU só chegaria depois do prazo. Não deu certo. Mas deixei as configurações no projeto. Caso o projeto não execute, basta deletar o arquivo docker-compose.yml
+Como não consegui instalar o docker, não consegui levantar o MinIO e fazer o upload das imagens.
+
+- Já trabalho na SEFAZ-MT à 15 anos, e atualmente estou no final de um contrato tenmporário de 2024, na área de desenvolvimento. Especialmente com React/Spring Boot.
+Todos os dias trabalho com desenvolvimento de sistemas da SEFAZ-MT legados e novos, o que inclui fazer testes unitários para atender as boas práticas conforme rigorosamente avaliadas por meio da plataforma Sonarqube.
+Porém, eu não consegui implementar nesse projeto a tempo do prazo.
+
 
 ## 📞 Suporte
 

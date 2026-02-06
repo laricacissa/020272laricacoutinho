@@ -13,7 +13,7 @@ function TelaArtistaNaoLogado() {
             <main>
                 <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
                     {/* Your content */}
-                    <MensagemSucesso message="Para acessar página Artista, o usuário deve fazer login na sua conta!" />
+                    <MensagemErro message="Para acessar página Artista, o usuário deve fazer login na sua conta!" />
                 </div>
             </main>
         </div>

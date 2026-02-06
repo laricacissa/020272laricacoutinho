@@ -8,7 +8,7 @@ import {Toolbar} from "primereact/toolbar";
 import {Button} from "primereact/button";
 import {InputText} from "primereact/inputtext";
 
-function TelaArtista() {
+function TelaArtista({ setMostrarMenuLogado }) {
 
     const [artistas, setArtistas] = useState([]);
     const [artista, setArtista] = useState(null);
@@ -20,6 +20,7 @@ function TelaArtista() {
 
     useEffect(() => {
         consultarTodosArtistas();
+        setMostrarMenuLogado('test123');
     }, []);
 
     const consultarTodosArtistas =  async () => {

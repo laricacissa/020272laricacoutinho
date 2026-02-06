@@ -10,7 +10,7 @@ import {Column} from "primereact/column";
 import {Dropdown} from "primereact/dropdown";
 import {FileUpload} from "primereact/fileupload";
 
-function TelaAlbum() {
+function TelaAlbum({ setMostrarMenuLogado }) {
 
     const [artistas, setArtistas] = useState([]);
     const [albuns, setAlbuns] = useState([]);
@@ -22,6 +22,7 @@ function TelaAlbum() {
     useEffect(() => {
         consultarTodosArtistas();
         consultarTodosAlbuns();
+        setMostrarMenuLogado('test123');
     }, []);
 
     const consultarTodosArtistas =  async () => {
