@@ -26,10 +26,10 @@ Projeto para o gerenciamento de artistas e seus álbuns desenvolvido em Spring B
 
 ### 1. H2 Database
 
-URL via Browser: http://localhost:8080/h2-console
-JDBC URL: jdbc:h2:mem:testdb
-User Name: sa
-Password: (vazio)
+- URL via Browser: http://localhost:8080/h2-console
+- JDBC URL: jdbc:h2:mem:testdb
+- User Name: sa
+- Password: (vazio)
 
 Obs.: Acessar após SpringBoot estar inicializado por completo.
 
@@ -132,78 +132,87 @@ As funcionalidades estarão disponível em `http://localhost:5173`
 
 ## 📚 API Endpoints
 
-### Upload de Arquivo
+### Login-Controller
 
-**POST** `/api/v1/files/upload`
+**POST** `/api/login`
 
-- **Content-Type**: `multipart/form-data`
-- **Parâmetro**: `file` (arquivo a ser enviado)
+- **Parâmetro**: (JSON)`{"username": string, "senha": string}`
 
 **Exemplo de uso:**
 
 ```bash
 curl -X POST \
-  http://localhost:8080/api/v1/files/upload \
-  -H 'Content-Type: multipart/form-data' \
-  -F 'file=@/caminho/para/seu/arquivo.jpg'
+  http://localhost:8080/api/login \
+  -H 'Content-Type: application/json' \
+  -d '{"username": "seplag", "senha": "123456"}'
 ```
 
-**Resposta de sucesso:**
+### Artista-Controller
 
-```json
-{
-  "success": true,
-  "message": "Arquivo enviado com sucesso",
-  "fileName": "20231010_143022_abc123.jpg",
-  "fileUrl": "http://localhost:9000/images/20231010_143022_abc123.jpg",
-  "fileSize": 1024576,
-  "contentType": "image/jpeg"
-}
-```
+# Lista todos os artistas cadastrados:
 
-### Listar Arquivos
+**GET** `/api/artistas` 
 
-**GET** `/api/v1/files/list`
+- **Parâmetro**: (JSON)`{"username": string, "senha": string}`
 
 **Exemplo de uso:**
 
 ```bash
-curl -X GET http://localhost:8080/api/v1/files/list
+curl -X GET http://localhost:8080/api/artistas 
 ```
 
-**Resposta de sucesso:**
+# Cadastrar novo artista:
 
-```json
-{
-  "success": true,
-  "message": null,
-  "files": [
-    "20231010_143022_abc123.jpg",
-    "20231010_144530_def456.png"
-  ],
-  "count": 2,
-  "error": null
-}
-```
+**POST** `/api/artistas`
 
-### Deletar Arquivo
-
-**DELETE** `/api/v1/files/delete/{fileName}`
+- **Parâmetro**: (JSON)`{"nomeArtista": "Biquini Cavadao"}`
 
 **Exemplo de uso:**
 
 ```bash
-curl -X DELETE http://localhost:8080/api/v1/files/delete/20231010_143022_abc123.jpg
+curl -X POST \
+  http://localhost:8080/api/artistas \
+  -H 'Content-Type: application/json' \
+  -d '{"nomeArtista": "Biquini Cavadao"}'
 ```
 
-**Resposta de sucesso:**
+### Album-Controller
 
-```json
-{
-  "success": true,
-  "message": "Arquivo deletado com sucesso",
-  "fileName": "20231010_143022_abc123.jpg"
-}
+# Lista todos os albuns cadastrados:
+
+**GET** `/api/albuns` 
+
+**Exemplo de uso:**
+
+```bash
+curl -X GET http://localhost:8080/api/albuns 
+```
+
+# Cadastrar novo album para determinado artista:
+
+**POST** `/api/albuns`
+
+- **Parâmetro**: (JSON)`{"nomeAlbum": "Vento Ventania", "idArtista": "6"}`
+
+**Exemplo de uso:**
+
+```bash
+curl -X POST \
+  http://localhost:8080/api/albuns \
+  -H 'Content-Type: application/json' \
+  -d '{"nomeAlbum": "Vento Ventania", "idArtista": "6"}'
+```
+
+# Lista todos os albuns por artista ID:
+
+**GET** `/api/albuns/artista` 
+
+**Exemplo de uso:**
+
+```bash
+curl -X GET http://localhost:8080/api/albuns/artista \
+  -H 'Content-Type: application/json' \
+  -d '{"idArtista": "1"}'
 ```
 
 ## 🏗️ Arquitetura do Projeto
@@ -211,206 +220,61 @@ curl -X DELETE http://localhost:8080/api/v1/files/delete/20231010_143022_abc123.
 No repositório temos duas pastas que compõem dois projetos separados:
 
 Projeto Backend: laricacoutinho-api
-Projeto Frontend: meu-app-fe
-
-
 
 ```
 src/
 ├── main/
 │   ├── java/
-│   │   └── com/devsdofuturobr/file/
-│   │       ├── config/          # Configurações (MinIO, etc.)
-│   │       ├── controller/      # Controllers REST
-│   │       ├── dto/            # Data Transfer Objects
-│   │       ├── exception/      # Tratamento de exceções
-│   │       ├── service/        # Interfaces de serviço
-│   │       │   └── impl/       # Implementações dos serviços
-│   │       └── FileApplication.java
+│   │   └── br/com/seplag/laricacoutinho_api/
+│   │       ├── config/          	# Configurações 
+│   │       ├── controller/      	# Controllers REST
+│   │       ├── dto/             	# Data Transfer Objects
+│   │       ├── model/           	# Entidades
+│   │       ├── repository/      	# Repositories
+│   │       ├── service/         	# Interfaces de serviço
+│   │       │   └── impl/        	# Implementações dos serviços
+│   │       ├── util/            	# Utilitários
+│   │       │   └── exception/   	# Tratamento de exceções
+│   │       └── LaricacoutinhoApiApplication.java
 │   └── resources/
-│       └── application.yml     # Configurações da aplicação
+│       ├── application.properties  # Configurações da aplicação
+│       ├── data.sql                # SQls Inserts no H2 Database(Memória)
+│       └── schema.sql  			# DDL de criação das tabelas no H2 Database(Memória)
 └── test/                       # Testes unitários
 ```
 
-### Principais Componentes
+Projeto Frontend: meu-app-fe
 
-- **FileUploadController**: Controller REST que expõe os endpoints da API
-- **FileUploadService**: Interface que define os contratos do serviço
-- **FileUploadServiceImpl**: Implementação do serviço de upload (localizada em service/impl/)
-- **GlobalExceptionHandler**: Tratamento centralizado de exceções
-- **MinioConfig**: Configuração do cliente MinIO
-- **DTOs**: Objetos de transferência de dados (FileResponse, FileListResponse, FileDeleteResponse, HealthResponse)
-
-## 🔧 Configurações Avançadas
-
-### Limites de Upload
-
-Por padrão, o tamanho máximo de arquivo é 10MB. Para alterar:
-
-1. Modifique as variáveis no arquivo `.env`:
-   ```env
-   MAX_FILE_SIZE=50MB
-   MAX_REQUEST_SIZE=50MB
-   ```
-
-## 🔗 Conectando com MinIO via AWS CLI
-
-O MinIO é compatível com a API do Amazon S3, permitindo o uso do AWS CLI para interagir com o servidor.
-
-### Instalação do AWS CLI
-
-```bash
-# macOS
-brew install awscli
-
-# Ubuntu/Debian
-sudo apt-get install awscli
-
-# Windows
-# Baixe o instalador do site oficial da AWS
 ```
-
-### Configuração do AWS CLI
-
-```bash
-# Configure o perfil para MinIO
-aws configure --profile minio
+meu-app-fe/
+├── public/
+├──	src/
+│	├── api/
+│	│   └── services/				# Acessa os endpoints
+│	├── assets/    
+│	│   ├── css/						# Cascading Style Sheets
+│	│   └── img/  					# Imagens 
+│	├── pages/    
+│	│   ├── album/ 					# Todas as telas envolvidas em gerenciar Album
+│	│   ├── artista/ 				# Todas as telas envolvidas em gerenciar Artista
+│	│   ├── include/ 				# Telas reutilizadas no projeto frontend
+│	│   │      ├── mensagens/       # Mostram mensagens de sucesso ou aviso
+│	│   │      └── menu/			# Menu 
+│	│   ├── login/ 			        # Telas de Login
+│	│   └── App.tsx 				# Define rota de navegação
+│	└── main.tsx                    # Template Principal
+├── .gitignore						# Lista arquivos que se quer ignorar
+├── README.md						# Informações sobre o Projeto
+├── eslint.config.js				#
+├── index.html						# Página index do projeto
+├── package.json					# Arquivo que contém todas as depencias do projeto
+├── postcss.config.cjs				# Arquivo que configura o  postcss
+├── tailwind.config.js				# Arquivo que configura o  tailwindcss
+├── tsconfig.app.json				#
+├── tsconfig.json					#
+├── tsconfig.node.json				#
+└── vite.config.ts					# Arquivo que configura o compilador Vite
 ```
-
-Quando solicitado, insira:
-- **AWS Access Key ID**: `minioadmin`
-- **AWS Secret Access Key**: `minioadmin123`
-- **Default region name**: `us-east-1`
-- **Default output format**: `json`
-
-### Comandos Úteis
-
-#### Listar buckets
-```bash
-aws --profile minio --endpoint-url http://localhost:9000 s3 ls
-```
-
-#### Criar bucket
-```bash
-aws --profile minio --endpoint-url http://localhost:9000 s3 mb s3://images
-```
-
-#### Listar arquivos no bucket
-```bash
-aws --profile minio --endpoint-url http://localhost:9000 s3 ls s3://images
-```
-
-#### Upload de arquivo
-```bash
-aws --profile minio --endpoint-url http://localhost:9000 s3 cp arquivo.jpg s3://images/
-```
-
-#### Download de arquivo
-```bash
-aws --profile minio --endpoint-url http://localhost:9000 s3 cp s3://images/arquivo.jpg ./
-```
-
-#### Deletar arquivo
-```bash
-aws --profile minio --endpoint-url http://localhost:9000 s3 rm s3://images/arquivo.jpg
-```
-
-#### Sincronizar diretório
-```bash
-# Upload de diretório local para bucket
-aws --profile minio --endpoint-url http://localhost:9000 s3 sync ./local-folder s3://images/
-
-# Download de bucket para diretório local
-aws --profile minio --endpoint-url http://localhost:9000 s3 sync s3://images/ ./local-folder
-```
-
-### Configuração Alternativa com Variáveis de Ambiente
-
-Para evitar usar `--profile` e `--endpoint-url` em cada comando:
-
-```bash
-# Defina as variáveis de ambiente
-export AWS_ACCESS_KEY_ID=minioadmin
-export AWS_SECRET_ACCESS_KEY=minioadmin123
-export AWS_DEFAULT_REGION=us-east-1
-export AWS_ENDPOINT_URL=http://localhost:9000
-
-# Agora você pode usar comandos mais simples
-aws s3 ls
-aws s3 ls s3://images
-aws s3 cp arquivo.jpg s3://images/
-```
-
-## 🐳 Docker
-
-O projeto inclui um ambiente Docker completo na pasta `docker/` com:
-
-- MinIO Server
-- MinIO Console
-- Configurações de rede
-
-## 🧪 Testes
-
-### Executar testes
-
-```bash
-mvn test
-```
-
-### Testar endpoints manualmente
-
-#### Usando cURL
-
-1. **Upload de arquivo:**
-   ```bash
-   curl -X POST -F "file=@test-image.png" http://localhost:8080/api/v1/files/upload
-   ```
-
-2. **Listar arquivos:**
-   ```bash
-   curl http://localhost:8080/api/v1/files/list
-   ```
-
-3. **Deletar arquivo:**
-   ```bash
-   curl -X DELETE http://localhost:8080/api/v1/files/delete/nome-do-arquivo.png
-   ```
-
-#### Usando Postman
-
-O projeto inclui uma coleção do Postman (`File_Upload_Service.postman_collection.json`) com todos os endpoints configurados para facilitar os testes. A coleção contém:
-
-- **Upload de arquivo**: Endpoint configurado para upload com exemplo de arquivo
-- **Listar arquivos**: Endpoint para listar todos os arquivos no bucket
-- **Deletar arquivo**: Endpoint para deletar arquivos específicos
-- **Variáveis de ambiente**: Configurações pré-definidas para URL base e outros parâmetros
-- **Exemplos de resposta**: Respostas de exemplo para cada endpoint
-
-A coleção está localizada na raiz do projeto e pode ser importada diretamente no Postman.
-
-## 📝 Logs
-
-A aplicação utiliza Log4j2 para logging. Os logs incluem:
-
-- Informações de upload (nome do arquivo, tamanho, etc.)
-- Erros de validação e exceções
-- Operações de listagem e exclusão
-
-## 🚨 Tratamento de Erros
-
-A aplicação possui tratamento centralizado de exceções que retorna respostas padronizadas:
-
-- **400 Bad Request**: Arquivo inválido ou muito grande
-- **404 Not Found**: Arquivo não encontrado
-- **500 Internal Server Error**: Erros internos do servidor
-
-## 🤝 Contribuição
-
-1. Faça um fork do projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
-3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
-4. Push para a branch (`git push origin feature/AmazingFeature`)
-5. Abra um Pull Request
 
 ## 📞 Suporte
 
